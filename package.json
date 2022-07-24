@@ -16,6 +16,7 @@
   "author": "abr-ya",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.0",
     "express": "^4.17.2",
     "inversify": "^6.0.1",
     "reflect-metadata": "^0.1.13",
