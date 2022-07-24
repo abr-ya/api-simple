@@ -14,6 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.2",
+    "inversify": "^6.0.1",
+    "reflect-metadata": "^0.1.13",
     "tslog": "^3.3.2",
     "typescript": "^4.5.4"
   },
