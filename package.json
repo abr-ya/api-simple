@@ -16,6 +16,7 @@
   "author": "abr-ya",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "express": "^4.17.2",
     "inversify": "^6.0.1",
@@ -23,6 +24,7 @@
     "tslog": "^3.3.2"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.13",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
