@@ -28,14 +28,22 @@ export class UserController extends BaseController implements IUserController {
         func: this.register,
         middlewares: [new ValidateMiddleware(UserRegisterDto)], // валидация параметров
       },
-      { path: '/login', method: 'post', func: this.login },
+      {
+        path: '/login',
+        method: 'post',
+        func: this.login,
+        middlewares: [new ValidateMiddleware(UserLoginDto)],
+      },
     ]);
   }
 
-  login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
-    console.log(req.body);
-    next(new HTTPError(401, 'Ошибка авторизации', 'login'));
-    //this.ok(res, 'login');
+  async login({ body }: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): Promise<void> {
+    this.loggerService.log(`[UsersController] login: ${body.email} - ${body.password}`);
+    const result = await this.userService.validateUser(body);
+    if (!result) {
+      return next(new HTTPError(401, 'ошибка авторизации', 'login'));
+    }
+    this.ok(res, {}); // todo: возвращать JWT-токен
   }
 
   async register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): Promise<void> {
@@ -44,6 +52,7 @@ export class UserController extends BaseController implements IUserController {
     if (!result) {
       return next(new HTTPError(422, 'Такой пользователь уже существует'));
     }
-    this.ok(res, { email: result.email });
+    const { email, id } = result;
+    this.ok(res, { email, id });
   }
 }
