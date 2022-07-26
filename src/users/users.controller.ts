@@ -37,20 +37,24 @@ export class UserController extends BaseController implements IUserController {
     ]);
   }
 
+  // messages
+  TEXT401 = 'Ошибка авторизации';
+  TEXT422 = 'Такой пользователь уже существует';
+
   async login({ body }: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): Promise<void> {
     this.loggerService.log(`[UsersController] login: ${body.email} - ${body.password}`);
     const result = await this.userService.validateUser(body);
     if (!result) {
-      return next(new HTTPError(401, 'ошибка авторизации', 'login'));
+      return next(new HTTPError(401, this.TEXT401, 'login'));
     }
     this.ok(res, {}); // todo: возвращать JWT-токен
   }
 
   async register({ body }: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): Promise<void> {
-    console.log(body);
+    this.loggerService.log(`[UsersController] register: ${body.email} - ${body.password}`);
     const result = await this.userService.createUser(body); // бизнес-логика
     if (!result) {
-      return next(new HTTPError(422, 'Такой пользователь уже существует'));
+      return next(new HTTPError(422, this.TEXT422, 'register'));
     }
     const { email, id } = result;
     this.ok(res, { email, id });
